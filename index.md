@@ -37,7 +37,7 @@ title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Ar
       Recap schemas can be defined in YAML, TOML, JSON, XML, or any other compatible language. Here’s a YAML example.
     </p>
     <pre class="whitespace-pre text-left mx-auto inline-block text-sm">
-      <code>
+      <code class="-ml-8">
 type: struct
 fields:
   - name: id
