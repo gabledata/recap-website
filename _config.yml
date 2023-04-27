@@ -1,0 +1,7 @@
+url: "https://recap.build"
+baseurl: ""
+title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Arrow, and More... | Recap"
+plugins:
+  - jekyll-postcss
+postcss:
+  cache: false
