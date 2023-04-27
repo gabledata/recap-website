@@ -3,7 +3,7 @@ layout: default
 title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Arrow, and More..."
 ---
 
-<div class="w-2/5 text-center m-auto">
+<div class="md:w-2/5 text-center m-auto">
   {% svg "/assets/images/recap.svg" class="mx-auto my-12" %}
 
   <h2 class="text-2xl leading-normal">
@@ -70,11 +70,11 @@ fields:
   <div class="w-3/4 mx-auto my-36">
     <h3 class="text-xl my-2">Non-Goals</h3>
     <p>
-      Recap is a user-friendly, approachable schema language. Recap is not...
+      Recap is a user-friendly, approachable schema language. Recap is not a...
     </p>
     <ul class="inline-block m-auto text-left my-6">
       <li>▪ Serialization format (<a href="https://protobuf.dev">Protobuf</a>, <a href="https://avro.apache.org/">Avro</a>, <a href="https://www.json.org/">JSON</a>)</li>
-      <li>▪ Programmable type system (<a href="https://cuelang.org/">CUE</a> <a href="https://kcl-lang.io/">KCL</a>)</li>
+      <li>▪ Programmable type system (<a href="https://cuelang.org/">CUE</a>, <a href="https://kcl-lang.io/">KCL</a>)</li>
       <li>▪ Templating system (<a href="https://jsonnet.org/">Jsonnet</a>)</li>
       <li>▪ In-memory analytics format (<a href="https://arrow.apache.org/">Arrow</a>)</li>
       <li>▪ DB migration tool (<a href="https://alembic.sqlalchemy.org/">Alembic</a>, <a href="https://flywaydb.org/">Flyway</a>, <a href="https://www.liquibase.org/">Liquibase</a>)</li>    
