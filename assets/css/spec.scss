@@ -1,0 +1,32 @@
+---
+---
+
+ul {
+  @apply list-disc ml-8;
+}
+table, th, td {
+  @apply w-full;
+  @apply border px-3 py-1;
+}
+tr {
+  @apply even:bg-gray-50;
+}  
+p {
+  @apply py-2;
+}
+div.footer {
+  @apply mt-32;
+}
+code {
+  @apply bg-gray-100 p-1;
+}
+h3 > code {
+  @apply text-xl font-semibold p-1;
+}
+pre > code {
+  @apply p-4;
+  @apply max-w-fit;
+}
+h1, h2 {
+  @apply border-b pb-3;
+}
