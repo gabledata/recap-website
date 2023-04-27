@@ -191,6 +191,35 @@ a {
   text-decoration-line: underline;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+code {
+  display: inline-block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: pre;
+}
+
 *, :after, :before {
   --tw-border-spacing-x:0;
   --tw-border-spacing-y:0;
@@ -291,13 +320,12 @@ a {
   --tw-backdrop-sepia: ;
 }
 
-.m-auto {
-  margin: auto;
+.fixed {
+  position: fixed;
 }
 
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
+.m-auto {
+  margin: auto;
 }
 
 .mx-auto {
@@ -350,6 +378,10 @@ a {
   width: 2rem;
 }
 
+.list-none {
+  list-style-type: none;
+}
+
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -373,6 +405,10 @@ a {
 .bg-black {
   --tw-bg-opacity:1;
   background-color: rgb(0 0 0/var(--tw-bg-opacity));
+}
+
+.p-4 {
+  padding: 1rem;
 }
 
 .p-8 {
@@ -425,11 +461,14 @@ a {
   .md\:w-1\/2 {
     width: 50%;
   }
-  .md\:w-2\/5 {
-    width: 40%;
+  .md\:w-2\/3 {
+    width: 66.666667%;
   }
   .md\:w-3\/4 {
     width: 75%;
+  }
+  .md\:max-w-screen-md {
+    max-width: 768px;
   }
 }
 

@@ -1,0 +1,52 @@
+ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+}
+
+table, td, th {
+  border-width: 1px;
+  padding: 0.25rem 0.75rem;
+  width: 100%;
+}
+
+tr:nth-child(2n) {
+  --tw-bg-opacity:1;
+  background-color: rgb(249 250 251/var(--tw-bg-opacity));
+}
+
+p {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+div.footer {
+  margin-top: 8rem;
+}
+
+code {
+  --tw-bg-opacity:1;
+  background-color: rgb(243 244 246/var(--tw-bg-opacity));
+}
+
+code, h3 > code {
+  padding: 0.25rem;
+}
+
+h3 > code {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+
+pre > code {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  padding: 1rem;
+}
+
+h1, h2 {
+  border-bottom-width: 1px;
+  padding-bottom: 0.75rem;
+}
+
+/*# sourceMappingURL=spec.css.map */
