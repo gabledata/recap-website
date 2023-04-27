@@ -10,7 +10,7 @@ title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Ar
     A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Arrow, and More...
   </h2>
 
-  <p class="w-3/4 mx-auto my-4">
+  <p class="w-5/6 md:w-3/4 mx-auto my-4">
     Recap describes database tables and serialization formats with minimal type coercion.
   </p>
 
@@ -18,12 +18,12 @@ title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Ar
     Read the Spec
   </a>
 
-  <div class="w-3/4 mx-auto my-36">
+  <div class="w-5/6 md:w-3/4 mx-auto my-36">
     <h3 class="text-xl my-2">Types</h3>
     <p>
       Recap borrows types from <a href="https://arrow.apache.org/">Apache Arrow</a>'s <a href="https://github.com/apache/arrow/blob/main/format/Schema.fbs">Schema.fbs</a> and <a href="https://kafka.apache.org/">Apache Kafka</a>'s <a href="https://github.com/apache/kafka/blob/trunk/connect/api/src/main/java/org/apache/kafka/connect/data/Schema.java">Schema.java</a>.
     </p>
-    <div class="grid grid-cols-2 gap-0 my-4 w-1/2 mx-auto text-left">
+    <div class="grid grid-cols-2 gap-0 my-4 w-5/6 md:w-1/2 mx-auto text-left">
       <div>▪ null</div><div>▪ list</div>
       <div>▪ bool</div><div>▪ map</div>
       <div>▪ int</div><div>▪ struct</div>
@@ -33,7 +33,7 @@ title: "A Schema Language Compatible With JSON, Protobuf, Avro, SQL, Parquet, Ar
     </div>    
   </div>
 
-  <div class="w-3/4 mx-auto my-36">
+  <div class="w-5/6 md:w-3/4 mx-auto my-36">
     <h3 class="text-xl my-2">Format</h3>
     <p>
       Recap schemas can be defined in YAML, TOML, JSON, XML, or any other compatible language. Here’s a YAML example.
@@ -53,7 +53,7 @@ fields:
     </pre>
   </div>
 
-  <div class="w-3/4 mx-auto my-36">
+  <div class="w-5/6 md:w-3/4 mx-auto my-36">
     <h3 class="text-xl my-2">Use Cases</h3>
     <p>
       Build one set of schema management tools for your whole ecosystem.
@@ -61,23 +61,23 @@ fields:
     <ul class="inline-block m-auto text-left my-6">
       <li>▪ Compare schemas</li>
       <li>▪ Check schema compatibility</li>
-      <li>▪ Store schemas in catalogs and registries</li>
+      <li>▪ Store schemas in a catalog or registry</li>
       <li>▪ Transpile schemas</li>
       <li>▪ Transform schemas</li>
     </ul>
   </div>
 
-  <div class="w-3/4 mx-auto my-36">
+  <div class="w-5/6 md:w-3/4 mx-auto my-36">
     <h3 class="text-xl my-2">Non-Goals</h3>
     <p>
       Recap is a user-friendly, approachable schema language. Recap is not a...
     </p>
     <ul class="inline-block m-auto text-left my-6">
-      <li>▪ Serialization format (<a href="https://protobuf.dev">Protobuf</a>, <a href="https://avro.apache.org/">Avro</a>, <a href="https://www.json.org/">JSON</a>)</li>
-      <li>▪ Programmable type system (<a href="https://cuelang.org/">CUE</a>, <a href="https://kcl-lang.io/">KCL</a>)</li>
+      <li>▪ Serialization format (<a href="https://protobuf.dev">Protobuf</a>, <a href="https://avro.apache.org/">Avro</a>)</li>
+      <li>▪ Programmable type system (<a href="https://cuelang.org/">CUE</a>)</li>
       <li>▪ Templating system (<a href="https://jsonnet.org/">Jsonnet</a>)</li>
       <li>▪ In-memory analytics format (<a href="https://arrow.apache.org/">Arrow</a>)</li>
-      <li>▪ DB migration tool (<a href="https://alembic.sqlalchemy.org/">Alembic</a>, <a href="https://flywaydb.org/">Flyway</a>, <a href="https://www.liquibase.org/">Liquibase</a>)</li>    
+      <li>▪ DB migration tool (<a href="https://alembic.sqlalchemy.org/">Alembic</a>, <a href="https://flywaydb.org/">Flyway</a>)</li>
     </ul>
   </div>
 </div>

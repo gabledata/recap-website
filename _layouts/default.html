@@ -6,8 +6,9 @@
     <title>{{ page.title }} | {{ site.title }}</title>
     <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
   <body>
-    {{ content }}
-
+    <div class="mx-4">
+      {{ content }}
+    </div>
     <div class="bg-black grid grid-cols-1 justify-items-center p-8">
       <a href="https://github.com/recap-build/recap-website">
         {% svg "/assets/images/github.svg" class="w-8" %}
