@@ -341,10 +341,6 @@ a {
   width: 50%;
 }
 
-.w-2\/5 {
-  width: 40%;
-}
-
 .w-3\/4 {
   width: 75%;
 }
@@ -406,6 +402,12 @@ a {
 .text-white {
   --tw-text-opacity:1;
   color: rgb(255 255 255/var(--tw-text-opacity));
+}
+
+@media (min-width: 768px) {
+  .md\:w-2\/5 {
+    width: 40%;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */
