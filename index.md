@@ -65,7 +65,7 @@ fields:
     </ul>
   </div>
 
-  <div class="w-5/6 md:w-2/3 mx-auto my-36">
+  <div class="w-5/6 md:w-2/3 mx-auto mt-36">
     <h3 class="text-xl my-2">Non-Goals</h3>
     <p>
       Recap is a user-friendly, approachable schema language. Recap is not a...
