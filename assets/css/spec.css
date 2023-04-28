@@ -26,14 +26,12 @@ p {
 code {
   --tw-bg-opacity:1;
   background-color: rgb(243 244 246/var(--tw-bg-opacity));
-}
-
-code, h3, h4 > code {
   padding: 0.25rem;
 }
 
-h3, h4 > code {
+h3 > code, h4 > code {
   font-weight: 600;
+  padding: 0.25rem;
 }
 
 h3 > code {
