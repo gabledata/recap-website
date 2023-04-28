@@ -8,3 +8,6 @@ postcss:
   cache: false
 svg:
   optimize: true
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge

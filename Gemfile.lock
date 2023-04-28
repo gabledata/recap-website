@@ -82,6 +82,7 @@ DEPENDENCIES
   jekyll
   jekyll-inline-svg
   jekyll-postcss
+  rouge
   webrick
 
 BUNDLED WITH
