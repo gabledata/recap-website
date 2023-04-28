@@ -1,10 +1,11 @@
 ---
 ---
 
+@import 'syntax';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'syntax';
 
 @layer base {
   /* Disable horizontal scroll */
