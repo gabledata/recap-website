@@ -24,4 +24,7 @@
   code {
     @apply whitespace-pre inline-block text-sm;
   }
+  .footer a {
+    @apply no-underline;
+  }
 }
