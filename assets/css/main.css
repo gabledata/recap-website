@@ -220,6 +220,10 @@ code {
   white-space: pre;
 }
 
+.footer a {
+  text-decoration-line: none;
+}
+
 *, :after, :before {
   --tw-border-spacing-x:0;
   --tw-border-spacing-y:0;
@@ -357,6 +361,10 @@ code {
   margin-left: -2rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -466,6 +474,11 @@ code {
 
 .leading-normal {
   line-height: 1.5;
+}
+
+.text-gray-500 {
+  --tw-text-opacity:1;
+  color: rgb(107 114 128/var(--tw-text-opacity));
 }
 
 .text-white {
