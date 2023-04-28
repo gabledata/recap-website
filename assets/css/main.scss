@@ -7,6 +7,13 @@
 @import 'syntax';
 
 @layer base {
+  /* Disable horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
   a {
     @apply underline;
   }
