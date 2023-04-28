@@ -4,6 +4,7 @@ title: "Recap"
 plugins:
   - jekyll-inline-svg
   - jekyll-postcss
+  - jekyll-redirect-from
 postcss:
   cache: false
 svg:
