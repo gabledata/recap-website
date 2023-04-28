@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Schema Language Spec"
+title: "Spec"
 custom_css: spec
 ---
 
