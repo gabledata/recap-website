@@ -3,10 +3,14 @@ ul {
   margin-left: 2rem;
 }
 
-table, td, th {
+td, th {
   border-width: 1px;
   padding: 0.25rem 0.75rem;
-  width: 100%;
+}
+
+table {
+  display: block;
+  overflow-x: auto;
 }
 
 tr:nth-child(2n) {
@@ -19,28 +23,27 @@ p {
   padding-top: 0.5rem;
 }
 
-div.footer {
-  margin-top: 8rem;
-}
-
 code {
   --tw-bg-opacity:1;
   background-color: rgb(243 244 246/var(--tw-bg-opacity));
 }
 
-code, h3 > code {
+code, h3, h4 > code {
   padding: 0.25rem;
+}
+
+h3, h4 > code {
+  font-weight: 600;
 }
 
 h3 > code {
   font-size: 1.25rem;
-  font-weight: 600;
   line-height: 1.75rem;
 }
 
 pre > code {
-  max-width: -moz-fit-content;
-  max-width: fit-content;
+  display: block;
+  overflow-x: auto;
   padding: 1rem;
 }
 
