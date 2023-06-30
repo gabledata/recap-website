@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Spec | Recap" />
+    <meta property="og:description" content="Recap describes database tables and serialization formats with minimal type coercion" />
+    <meta property="og:image" content="https://recap.build/assets/images/og_image.png" />
+    <title>Spec | Recap</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+      <link rel="stylesheet" href="/assets/css/spec.css">
+    
+  <body class="bg-black">
+    <div class="bg-white pt-8 pb-36">
+      <a href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="196" height="44" viewBox="0 0 196 44" fill="none" class="mx-auto">
+  <rect width="81.6667" height="43.5556" fill="black"/>
+  <rect x="5.44444" y="5.44446" width="5.44444" height="32.6667" fill="white"/>
+  <rect x="5.44444" y="5.44446" width="32.6667" height="5.44444" fill="white"/>
+  <rect x="43.5556" y="5.44446" width="5.44444" height="32.6667" fill="white"/>
+  <rect x="70.7778" y="5.44446" width="5.44444" height="16.3333" fill="white"/>
+  <rect x="43.5556" y="5.44446" width="32.6667" height="5.44444" fill="white"/>
+  <rect x="43.5556" y="32.6667" width="32.6667" height="5.44444" fill="white"/>
+  <rect x="43.5556" y="16.3334" width="32.6667" height="5.44444" fill="white"/>
+  <rect x="87.1111" y="5.44446" width="5.44444" height="32.6667" fill="black"/>
+  <rect x="87.1111" y="5.44446" width="32.6667" height="5.44444" fill="black"/>
+  <rect x="87.1111" y="32.6667" width="32.6667" height="5.44444" fill="black"/>
+  <rect x="157.889" y="5.44446" width="5.44444" height="32.6667" transform="rotate(90 157.889 5.44446)" fill="black"/>
+  <rect x="157.889" y="16.3334" width="5.44444" height="32.6667" transform="rotate(90 157.889 16.3334)" fill="black"/>
+  <rect x="157.889" y="5.44446" width="32.6667" height="5.44444" transform="rotate(90 157.889 5.44446)" fill="black"/>
+  <rect x="130.667" y="5.44446" width="32.6667" height="5.44444" transform="rotate(90 130.667 5.44446)" fill="black"/>
+  <rect x="196" y="5.44446" width="5.44444" height="32.6667" transform="rotate(90 196 5.44446)" fill="black"/>
+  <rect x="196" y="16.3334" width="5.44444" height="32.6667" transform="rotate(90 196 16.3334)" fill="black"/>
+  <rect x="196" y="5.44446" width="16.3333" height="5.44444" transform="rotate(90 196 5.44446)" fill="black"/>
+  <rect x="168.778" y="5.44446" width="32.6667" height="5.44444" transform="rotate(90 168.778 5.44446)" fill="black"/>
+</svg>
+      </a>
+      <div class="md:max-w-screen-md mx-auto p-4">
+        <h1 id="recap-type-spec">Recap Type Spec</h1>
+
+<ul>
+  <li>Version 0.1.1</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This document defines Recap’s types. It is intended to be the authoritative specification. Recap type implementations must adhere to this document.</p>
+
+<p>This spec uses <a href="https://yaml.org">YAML</a> to provide examples, but Recap’s types are agnostic to the serialized format. Recap types may be defined in YAML, TOML, JSON, XML, or any other compatible language.</p>
+
+<h3 id="what-is-recaps-type-spec">What is Recap’s Type Spec?</h3>
+
+<p>Recap’s type spec describes a data model that can model relation database schemas and RPC IDLs with minimal type coercion. It’s similar to <a href="https://arrow.apache.org/">Apache Arrow</a>’s <a href="https://github.com/apache/arrow/blob/main/format/Schema.fbs">Schema.fbs</a> or <a href="https://kafka.apache.org">Apache Kafka</a>’s <a href="https://github.com/apache/kafka/blob/trunk/connect/api/src/main/java/org/apache/kafka/connect/data/Schema.java">Schema.java</a>.</p>
+
+<h3 id="why-does-recap-type-spec-exist">Why Does Recap Type Spec Exist?</h3>
+
+<p>Data passes through web services, databases, message brokers, and object stores. Each system describes its data differently. Developers have historically written conversion logic and tooling for each system. Repeatedly building custom logic and tooling is inefficient and error-prone. Recap’s type system describes schemas in a standard data model so a single set of converters and tools can be built to deal with data as it moves between systems.</p>
+
+<h2 id="types">Types</h2>
+
+<p>Recap supports the following types:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">null</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bool</code></li>
+  <li><code class="language-plaintext highlighter-rouge">int</code></li>
+  <li><code class="language-plaintext highlighter-rouge">float</code></li>
+  <li><code class="language-plaintext highlighter-rouge">string</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bytes</code></li>
+  <li><code class="language-plaintext highlighter-rouge">list</code></li>
+  <li><code class="language-plaintext highlighter-rouge">map</code></li>
+  <li><code class="language-plaintext highlighter-rouge">struct</code></li>
+  <li><code class="language-plaintext highlighter-rouge">enum</code></li>
+  <li><code class="language-plaintext highlighter-rouge">union</code></li>
+</ul>
+
+<p>This section defines each type.</p>
+
+<p><em>NOTE: Attribute types in the spec define what type a Recap implementation should use when storing the attribute. Attribute types are not the same as Recap types unless noted.</em></p>
+
+<h3 id="null"><code class="language-plaintext highlighter-rouge">null</code></h3>
+
+<p>A null value.</p>
+
+<h3 id="bool"><code class="language-plaintext highlighter-rouge">bool</code></h3>
+
+<p>A boolean value.</p>
+
+<h3 id="int"><code class="language-plaintext highlighter-rouge">int</code></h3>
+
+<p>An integer value with a fixed bit length.</p>
+
+<h4 id="attributes">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bits</td>
+      <td>Number of bits.</td>
+      <td>32-bit signed integer</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>signed</td>
+      <td>False means the integer is unsigned.</td>
+      <td>Boolean</td>
+      <td>NO</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A 32-bit signed integer</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+<span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+<span class="na">signed</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<h3 id="float"><code class="language-plaintext highlighter-rouge">float</code></h3>
+
+<p>An IEEE 754 encoded floating point value with a fixed bit length.</p>
+
+<h4 id="attributes-1">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bits</td>
+      <td>Number of bits.</td>
+      <td>32-bit signed integer</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-1">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A 32-bit IEEE 754 encoded float</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">float</span>
+<span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+</code></pre></div></div>
+
+<h3 id="string"><code class="language-plaintext highlighter-rouge">string</code></h3>
+
+<p>A UTF-8 encoded Unicode string with a maximum byte length.</p>
+
+<h4 id="attributes-2">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bytes</td>
+      <td>The maximum number of bytes to store the string.</td>
+      <td>64-bit signed integer</td>
+      <td>NO</td>
+      <td>65536</td>
+    </tr>
+    <tr>
+      <td>variable</td>
+      <td>If true, the string is variable-length (<code class="language-plaintext highlighter-rouge">&lt;= bytes</code>).</td>
+      <td>Boolean</td>
+      <td>NO</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-2">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A VARCHAR(255)</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">255</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<h3 id="bytes"><code class="language-plaintext highlighter-rouge">bytes</code></h3>
+
+<p>A byte array value.</p>
+
+<h4 id="attributes-3">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bytes</td>
+      <td>The maximum number of bytes that can be stored in the byte array.</td>
+      <td>64-bit signed integer</td>
+      <td>NO</td>
+      <td>65536</td>
+    </tr>
+    <tr>
+      <td>variable</td>
+      <td>If true, the byte array is variable-length (<code class="language-plaintext highlighter-rouge">&lt;= bytes</code>).</td>
+      <td>Boolean</td>
+      <td>NO</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-3">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A VARBINARY(255)</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">bytes</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">255</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<h3 id="list"><code class="language-plaintext highlighter-rouge">list</code></h3>
+
+<p>A list of values all sharing the same type.</p>
+
+<h4 id="attributes-4">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>values</td>
+      <td>Type for all items in the list.</td>
+      <td><em>Recap type object</em></td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>length</td>
+      <td>The maximum length of the list. If unset, the list size is infinite.</td>
+      <td>64-bit signed integer | null</td>
+      <td>NO</td>
+      <td>null</td>
+    </tr>
+    <tr>
+      <td>variable</td>
+      <td>If true, the list is variable-length (<code class="language-plaintext highlighter-rouge">&lt;= length</code> if <code class="language-plaintext highlighter-rouge">length</code> is set). If false, <code class="language-plaintext highlighter-rouge">length</code> must be set.</td>
+      <td>Boolean</td>
+      <td>NO</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-4">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A list of unsigned 64-bit integers</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">list</span>
+<span class="na">values</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+  <span class="na">bits</span><span class="pi">:</span> <span class="m">64</span>
+  <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<h3 id="map"><code class="language-plaintext highlighter-rouge">map</code></h3>
+
+<p>A map of key/value pairs where each key is the same type and each value is the same type.</p>
+
+<h4 id="attributes-5">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>keys</td>
+      <td>Type for all items in the key set.</td>
+      <td><em>Recap type object</em></td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>values</td>
+      <td>Type for all value items.</td>
+      <td><em>Recap type object</em></td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-5">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A map from 32-bit strings to boolean values</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">map</span>
+<span class="na">keys</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+  <span class="na">bytes</span><span class="pi">:</span> <span class="s">2_147_483_647</span>
+<span class="na">values</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">bool</span>
+</code></pre></div></div>
+
+<h3 id="struct"><code class="language-plaintext highlighter-rouge">struct</code></h3>
+
+<p>An ordered collection of Recap types. Table schemas are typically represented as Recap structs, though the two are not the same. Recap structs support additional features like the nested structs (like a <a href="https://protobuf.dev/reference/protobuf/proto3-spec/#message_definition">Protobuf Message</a>) and unnamed fields (like a CSV file with no header).</p>
+
+<h4 id="struct-attributes"><code class="language-plaintext highlighter-rouge">struct</code> Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>The struct’s name.</td>
+      <td>String</td>
+      <td>NO</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>An ordered list of Recap types.</td>
+      <td><em>List of Recap type objects</em></td>
+      <td>NO</td>
+      <td>[]</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="field-attributes"><code class="language-plaintext highlighter-rouge">field</code> Attributes</h4>
+
+<p>Recap types in the <code class="language-plaintext highlighter-rouge">fields</code> attribute can have two extra attributes set: <code class="language-plaintext highlighter-rouge">name</code> and <code class="language-plaintext highlighter-rouge">default</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>The field’s name.</td>
+      <td>String</td>
+      <td>NO</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>default</td>
+      <td>The default value for a reader if the field is not set in the struct.</td>
+      <td>Literal of any type</td>
+      <td>NO</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>An unset default is differentiated from a default with a null value. An unset default is treated as “no default”, while a default that’s been set to null is treated as a null default.</p>
+
+<p><em>NOTE: Database defaults often appear as strings like <code class="language-plaintext highlighter-rouge">nextval('\"public\".some_id_seq'::regclass)</code> or <code class="language-plaintext highlighter-rouge">'USD'::character varying</code>. Such defaults are left to the developer to interpret based on the database they’re using.</em></p>
+
+<h4 id="examples-6">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A struct with a required signed 32-bit integer field called "id"</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">id</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">email</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+    <span class="na">bytes</span><span class="pi">:</span> <span class="m">255</span>
+</code></pre></div></div>
+
+<p>Optional fields are expressed as a union with a <code class="language-plaintext highlighter-rouge">null</code> type and a null default (similar to <a href="https://avro.apache.org/docs/1.10.2/spec.html#schema_record">Avro’s fields</a>).</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A struct with an optional string field called "secondary_phone"</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secondary_phone</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">union</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">null"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">string32"</span><span class="pi">]</span>
+    <span class="na">default</span><span class="pi">:</span> <span class="kc">null</span>
+</code></pre></div></div>
+
+<h3 id="enum"><code class="language-plaintext highlighter-rouge">enum</code></h3>
+
+<p>An enumeration of string symbols.</p>
+
+<h4 id="attributes-6">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>symbols</td>
+      <td>An ordered list of string symbols.</td>
+      <td>List of strings</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-7">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># An enum with RGB symbols</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">enum</span>
+<span class="na">symbols</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">RED"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">GREEN"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">BLUE"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h3 id="union"><code class="language-plaintext highlighter-rouge">union</code></h3>
+
+<p>A value that can be one of several types. It is acceptable for a value to be more than one of the types in the union.</p>
+
+<h4 id="attributes-7">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>types</td>
+      <td>A list of types the value can be.</td>
+      <td><em>List of Recap type objects</em></td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-8">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A union type of null or a 32-bit signed int</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">union</span>
+<span class="na">types</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="kc">null</span>
+  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+</code></pre></div></div>
+
+<p>Unions can also be defined as a list of types:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A union type of null or a boolean</span>
+<span class="na">type</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">null"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">bool"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>All types support a <code class="language-plaintext highlighter-rouge">doc</code> attribute, which allows developers to document types.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>doc</td>
+      <td>A documentation string for the type.</td>
+      <td>A string | null</td>
+      <td>NO</td>
+      <td>null</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">union</span>
+<span class="na">doc</span><span class="pi">:</span> <span class="s">A union type of </span><span class="kc">null</span><span class="s"> or a 32-bit signed int</span>
+<span class="na">types</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="kc">null</span>
+    <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+      <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+</code></pre></div></div>
+
+<h2 id="logical-types">Logical Types</h2>
+
+<p>Logical types annotate one of the 11 Recap types listed in the <em>Types</em> section at the top of the spec. Logical types add additional context to Recap types that help converters. For example, a <code class="language-plaintext highlighter-rouge">decimal</code> logical type can be defined as:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">bytes</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">decimal</span>
+<span class="na">precision</span><span class="pi">:</span> <span class="m">6</span>
+<span class="na">scale</span><span class="pi">:</span> <span class="m">3</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">16</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<p>Developers may define their own logical types.</p>
+
+<p>Logical types may require additional attributes such as the <code class="language-plaintext highlighter-rouge">precision</code> and <code class="language-plaintext highlighter-rouge">scale</code> attributes shown above. Recap converters may use <code class="language-plaintext highlighter-rouge">logical</code> annotations to convert schemas to more accurate types such as SQL’s <code class="language-plaintext highlighter-rouge">DECIMAL</code> type (rather than <code class="language-plaintext highlighter-rouge">BYTES</code>).</p>
+
+<p>Logical type names are globally unique, so they must include a unique dotted namespace prefix.</p>
+
+<h3 id="built-in-logical-types">Built-in Logical Types</h3>
+
+<p>Recap comes with a collection of built-in logical types:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Date</code>: An integer representing a length of time since the UNIX epoch without timezones and leap seconds.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Decimal</code>: A byte array representing an arbitrary-precision decimal number.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Duration</code>: An integer representing a length of time and time unit without timezones and leap seconds.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Interval</code>: A byte array representing an interval of time on a calendar measured in months, days, and a duration of intra-day time with a time unit.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Time</code>: An integer representing a length of time since midnight without timezones and leap seconds.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.Timestamp</code>: An integer representing a length of time (in a time unit) since a specific epoch.</li>
+  <li><code class="language-plaintext highlighter-rouge">build.recap.UUID</code>: A string representing a UUID in 8-4-4-4-12 format as defined in <a href="https://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.</li>
+</ul>
+
+<h3 id="buildrecapdate"><code class="language-plaintext highlighter-rouge">build.recap.Date</code></h3>
+
+<p>Elapsed time since the UNIX epoch without timezones and leap seconds.</p>
+
+<h4 id="annotates">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Date</code> logical types must annotate <code class="language-plaintext highlighter-rouge">int</code> types.</p>
+
+<h4 id="attributes-8">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unit</td>
+      <td>A string time unit.</td>
+      <td>String literal of year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, or picosecond.</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-9">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Date</span>
+<span class="na">unit</span><span class="pi">:</span> <span class="s">day</span>
+</code></pre></div></div>
+
+<h3 id="buildrecapdecimal"><code class="language-plaintext highlighter-rouge">build.recap.Decimal</code></h3>
+
+<p>An arbitrary-precision decimal number. This type is the same as <a href="https://avro.apache.org/docs/1.10.2/spec.html#Decimal">Avro’s Decimal</a>.</p>
+
+<h4 id="annotates-1">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Decimal</code> logical types must annotate <code class="language-plaintext highlighter-rouge">bytes</code> types.</p>
+
+<h4 id="attributes-9">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>precision</td>
+      <td>Total number of digits. 123.456 has a precision of 6.</td>
+      <td>32-bit signed integer</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>scale</td>
+      <td>Digits to the right of the decimal point. 123.456 has a scale of 3.</td>
+      <td>32-bit signed integer</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-10">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">bytes</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Decimal</span>
+<span class="na">precision</span><span class="pi">:</span> <span class="m">6</span>
+<span class="na">scale</span><span class="pi">:</span> <span class="m">3</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">16</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<h3 id="buildrecapduration"><code class="language-plaintext highlighter-rouge">build.recap.Duration</code></h3>
+
+<p>A length of time without timezones and leap seconds. This type is the same as <a href="https://arrow.apache.org/docs/python/generated/pyarrow.duration.html">Arrow’s Duration</a> but with a superset of time units.</p>
+
+<h4 id="annotates-2">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Duration</code> logical types must annotate <code class="language-plaintext highlighter-rouge">int</code> types.</p>
+
+<h4 id="attributes-10">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unit</td>
+      <td>A string time unit.</td>
+      <td>String literal of year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, or picosecond.</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-11">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Duration</span>
+<span class="na">bits</span><span class="pi">:</span> <span class="m">64</span>
+</code></pre></div></div>
+
+<h3 id="buildrecapinterval"><code class="language-plaintext highlighter-rouge">build.recap.Interval</code></h3>
+
+<p>An interval of time on a calendar. This measurement allows you to measure time without worrying about leap seconds, leap years, and time changes. Years, quarters, hours, and minutes can be expressed using this type.</p>
+
+<p>Intervals are measured in months, days, and an intra-day time measurement. Months and days are each 32-bit signed integers. The remainder is a 64-bit signed integer measured in a certain time unit. Leap seconds are ignored.</p>
+
+<h4 id="annotates-3">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Interval</code> logical types must annotate <code class="language-plaintext highlighter-rouge">bytes</code> types with the <code class="language-plaintext highlighter-rouge">variable</code> attribute set to <code class="language-plaintext highlighter-rouge">false</code> and the <code class="language-plaintext highlighter-rouge">bytes</code> attribute set to <code class="language-plaintext highlighter-rouge">16</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Interval</code> is the same as <a href="https://avro.apache.org/docs/1.10.2/spec.html#Duration">Avro’s Duration</a> but with a superset of time units and 16 bytes instead of 12 bytes.</p>
+
+<h4 id="attributes-11">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unit</td>
+      <td>A string time unit.</td>
+      <td>String literal of year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, or picosecond.</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-12">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">bytes</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Interval</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">16</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">false</span>
+<span class="na">unit</span><span class="pi">:</span> <span class="s">millisecond</span>
+</code></pre></div></div>
+
+<h3 id="buildrecaptime"><code class="language-plaintext highlighter-rouge">build.recap.Time</code></h3>
+
+<p>Elapsed time since midnight without timezones and leap seconds.</p>
+
+<h4 id="annotates-4">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Time</code> logical types must annotate <code class="language-plaintext highlighter-rouge">int</code> types.</p>
+
+<h4 id="attributes-12">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unit</td>
+      <td>A string time unit.</td>
+      <td>String literal of year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, or picosecond.</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-13">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Time</span>
+<span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+<span class="na">unit</span><span class="pi">:</span> <span class="s">millisecond</span>
+</code></pre></div></div>
+
+<h3 id="buildrecaptimestamp"><code class="language-plaintext highlighter-rouge">build.recap.Timestamp</code></h3>
+
+<p>Time elapsed since a specific epoch.</p>
+
+<p>A timestamp with no timezone is a <code class="language-plaintext highlighter-rouge">DATETIME</code> in database parlance–a date and time as you would see it on wrist-watch.</p>
+
+<p>A timestamp with a timezone represents the amount of time elapsed since the 1970-01-01 00:00:00 epoch in UTC time zone (regardless of the timezone that’s specified). Readers must translate the UTC timestamp to a timestamp value for the specified timezone. See Apache Arrow’s <a href="https://github.com/apache/arrow/blob/main/format/Schema.fbs">Schema.fbs</a> documentation for more details.</p>
+
+<p>This type is the same as <a href="https://arrow.apache.org/docs/python/generated/pyarrow.timestamp.html">Arrow’s timestamp</a> but with a superset of time units and an arbitrary bit length.</p>
+
+<h4 id="annotates-5">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.Timestamp</code> logical types must annotate <code class="language-plaintext highlighter-rouge">int</code> types.</p>
+
+<h4 id="attributes-13">Attributes</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unit</td>
+      <td>A string time unit.</td>
+      <td>String literal of year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, or picosecond.</td>
+      <td>YES</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>timezone</td>
+      <td>An optional <a href="https://en.wikipedia.org/wiki/Tz_database">Olson timezone database</a> string.</td>
+      <td>A string | null</td>
+      <td>NO</td>
+      <td>null</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="examples-14">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.Timestamp</span>
+<span class="na">bits</span><span class="pi">:</span> <span class="m">64</span>
+</code></pre></div></div>
+
+<h3 id="buildrecapuuid"><code class="language-plaintext highlighter-rouge">build.recap.UUID</code></h3>
+
+<p>A string representing a UUID in 8-4-4-4-12 format as defined in <a href="https://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.</p>
+
+<h4 id="annotates-6">Annotates</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.UUID</code> logical types must annotate <code class="language-plaintext highlighter-rouge">string</code> types with a <code class="language-plaintext highlighter-rouge">bytes</code> attribute greater than or equal to 36.</p>
+
+<h4 id="attributes-14">Attributes</h4>
+
+<p><code class="language-plaintext highlighter-rouge">build.recap.UUID</code> logical types have no additional attributes.</p>
+
+<h4 id="examples-15">Examples</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+<span class="na">logical</span><span class="pi">:</span> <span class="s">build.recap.UUID</span>
+<span class="na">bytes</span><span class="pi">:</span> <span class="m">36</span>
+<span class="na">variable</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<h2 id="aliases">Aliases</h2>
+
+<p>All types support an <code class="language-plaintext highlighter-rouge">alias</code> attribute. An <code class="language-plaintext highlighter-rouge">alias</code> must reference one of the 11 Recap types defined above. Aliases are useful in larger data structures where complex types are repeatedly used.</p>
+
+<p>Aliases are globally unique, so they must include a unique dotted namespace prefix. Naked aliases (aliases with no dotted namespace) are reserved for Recap’s built-in aliases (see the next section).</p>
+
+<h3 id="attributes-15">Attributes</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>alias</td>
+      <td>An alias for the type.</td>
+      <td>A string | null</td>
+      <td>NO</td>
+      <td>null</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="examples-16">Examples</h3>
+
+<p>Aliases are referenced using the <code class="language-plaintext highlighter-rouge">type</code> field:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">doc</span><span class="pi">:</span> <span class="s">A book with pages</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">previous</span>
+    <span class="na">alias</span><span class="pi">:</span> <span class="s">com.mycorp.models.Page</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">next</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">com.mycorp.models.Page</span>
+</code></pre></div></div>
+
+<p>Recap will treat this struct the same as:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">doc</span><span class="pi">:</span> <span class="s">A book with pages</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">previous</span>
+    <span class="na">alias</span><span class="pi">:</span> <span class="s">com.mycorp.models.Page</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="c1"># The `next` field has the same types and attributes</span>
+  <span class="c1"># as the `previous` one; they're both pages.</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">next</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<p>Recap also allows cyclic references:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">alias</span><span class="pi">:</span> <span class="s">com.mycorp.models.LinkedListUint32</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">doc</span><span class="pi">:</span> <span class="s">A linked list of unsigned 32-bit integers</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">value</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">next</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">com.mycorp.models.LinkedListUint32</span>
+</code></pre></div></div>
+
+<p>And attribute overrides:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">id</span>
+    <span class="na">alias</span><span class="pi">:</span> <span class="s">com.mycorp.models.Uint24</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">24</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">signed_id</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">com.mycorp.models.Uint24</span>
+    <span class="c1"># Let's make this a signed int24</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<p>But alias inheritance is not allowed:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">type</span><span class="pi">:</span> <span class="s">struct</span>
+<span class="na">doc</span><span class="pi">:</span> <span class="s">All fields have the same type</span>
+<span class="na">fields</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">field1</span>
+    <span class="na">alias</span><span class="pi">:</span> <span class="s2">"</span><span class="s">com.mycorp.models.Field"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">int</span>
+    <span class="na">bits</span><span class="pi">:</span> <span class="m">32</span>
+    <span class="na">signed</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">field2</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">com.mycorp.models.Field</span>
+    <span class="c1"># An alias of an alias isn't allowed.</span>
+    <span class="na">alias</span><span class="pi">:</span> <span class="s">com.mycorp.models.FieldAlias</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">field3</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">com.mycorp.models.FieldAlias</span>
+</code></pre></div></div>
+
+<h3 id="built-in-aliases">Built-in Aliases</h3>
+
+<p>Recap comes with a collection of built-in aliases:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">int8</code>: An 8-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">uint8</code>: An 8-bit unsigned integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">int16</code>: A 16-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">uint16</code>: A 16-bit unsigned integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">int32</code>: A 32-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">uint32</code>: A 32-bit unsigned integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">int64</code>: A 64-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">uint64</code>: A 64-bit unsigned integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">float16</code>: A 16-bit IEEE 754 encoded floating point number.</li>
+  <li><code class="language-plaintext highlighter-rouge">float32</code>: A 32-bit IEEE 754 encoded floating point number.</li>
+  <li><code class="language-plaintext highlighter-rouge">float64</code>: A 64-bit IEEE 754 encoded floating point number.</li>
+  <li><code class="language-plaintext highlighter-rouge">string32</code>: A variable-length UTF-8 encoded unicode string with a maximum length of 2_147_483_648.</li>
+  <li><code class="language-plaintext highlighter-rouge">string64</code>: A variable-length UTF-8 encoded unicode string with a maximum length of 9_223_372_036_854_775_807.</li>
+  <li><code class="language-plaintext highlighter-rouge">bytes32</code>: A variable-length byte array with a maximum length of 2_147_483_648.</li>
+  <li><code class="language-plaintext highlighter-rouge">bytes64</code>: A variable-length byte array with a maximum length of 9_223_372_036_854_775_807.</li>
+  <li><code class="language-plaintext highlighter-rouge">uuid</code>: A fixed-length 36 byte string in UUID 8-4-4-4-12 string format as defined in <a href="https://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>.</li>
+  <li><code class="language-plaintext highlighter-rouge">decimal128</code>: An arbitrary-precision decimal number stored in a fixed-length 128-bit byte array.</li>
+  <li><code class="language-plaintext highlighter-rouge">decimal256</code>: An arbitrary-precision decimal number stored in a fixed-length 256-bit byte array.</li>
+  <li><code class="language-plaintext highlighter-rouge">duration64</code>: A length of time and time unit without timezones and leap seconds.</li>
+  <li><code class="language-plaintext highlighter-rouge">interval128</code>: An interval of time on a calendar measured in months, days, and a duration of intra-day time with a time unit.</li>
+  <li><code class="language-plaintext highlighter-rouge">time32</code>: Time since midnight without timezones and leap seconds in a 32-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">time64</code>: Time since midnight without timezones and leap seconds in a 64-bit signed integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp64</code>: Time elapsed (in a time unit) since a specific epoch.</li>
+  <li><code class="language-plaintext highlighter-rouge">date32</code>: Date since the UNIX epoch without timezones and leap seconds in a 32-bit integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">date64</code>: Date since the UNIX epoch without timezones and leap seconds in a 64-bit integer.</li>
+</ul>
+
+      </div>
+    </div>
+    <div class="footer bg-black grid grid-cols-1 justify-items-center p-8">
+      <a href="https://github.com/recap-build/recap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="w-8 mx-auto mb-4">
+  <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" fill="white"/>
+</svg>
+      </a>
+      <p class="text-gray-500">
+        <a href="/spec">Spec</a> &middot; <a href="/faq">FAQ</a>
+      </p>
+  </div>
+  </body>
+</html>
