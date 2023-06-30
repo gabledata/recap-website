@@ -1,3 +1,3 @@
 ---
-redirect_to: /spec/0.1.0
+redirect_to: /spec/0.1.1
 ---
