@@ -1,14 +1,12 @@
 url: "https://recap.build"
-baseurl: ""
 title: "Recap"
+description: "Read schemas from web service, databases, and schema registries in a standard format."
+theme: just-the-docs
+
+logo: "/assets/images/recap-logo.png"
+color_scheme: recap
+aux_links:
+  "<i class=\"social-logo fa-brands fa-github\"></i>":
+    - "//github.com/recap-build/recap"
 plugins:
-  - jekyll-inline-svg
-  - jekyll-postcss
   - jekyll-redirect-from
-postcss:
-  cache: false
-svg:
-  optimize: true
-markdown: kramdown
-kramdown:
-  syntax_highlighter: rouge
