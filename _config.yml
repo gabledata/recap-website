@@ -11,10 +11,16 @@ aux_links:
 plugins:
   - jekyll-redirect-from
 
-
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub."
 gh_edit_repository: "https://github.com/recap-build/recap-website"
 gh_edit_branch: "main"
 gh_edit_view_mode: "tree"
+
+# Back to top button
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Remove .html from pages
+permalink: pretty
