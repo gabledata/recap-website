@@ -81,7 +81,7 @@ recap_schema = ProtobufConverter().to_recap(protobuf_schema)
 
 This table shows the corresponding Protobuf types for each Recap type.
 
-| Recap Type (with attribute limits) | Protobuf Type |
+| Recap Type | Protobuf Type |
 |------------------------------------|---------------|
 | NullType                           | google.protobuf.NullValue |
 | BoolType                           | bool |

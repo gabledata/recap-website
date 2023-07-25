@@ -80,7 +80,7 @@ recap_schema = AvroConverter().to_recap(avro_schema)
 
 ### From Recap to Avro
 
-| Recap Type (with attribute limits) | Avro Type |
+| Recap Type | Avro Type |
 |------------------------------------|-----------|
 | NullType                           | null      |
 | BoolType                           | boolean   |
@@ -98,7 +98,7 @@ recap_schema = AvroConverter().to_recap(avro_schema)
 
 ### From Avro to Recap
 
-| Avro Type | Recap Type (with attribute limits) |
+| Avro Type | Recap Type |
 |-----------|------------------------------------|
 | null      | NullType                           |
 | boolean   | BoolType                           |
