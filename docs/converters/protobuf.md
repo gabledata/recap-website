@@ -129,4 +129,4 @@ Recap aliases are converted to Protobuf `package` and `message` names. An alias 
 
 The Recap type system is more expressive than the Protobuf type system. Consequently, there are some Recap types which cannot be represented in Protobuf, or which are represented less precisely. For instance, IntType with bits > 64 cannot be represented in Protobuf, as Protobuf only supports 32-bit and 64-bit integers.
 
-The conversion functions raise a ValueError exception if the conversion is not possible.
+The conversion functions raise a `ValueError` exception if the conversion is not possible.
