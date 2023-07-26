@@ -2,7 +2,6 @@ url: "https://recap.build"
 title: "Recap"
 description: "Read schemas from web service, databases, and schema registries in a standard format."
 theme: just-the-docs
-
 logo: "/assets/images/recap-logo.png"
 color_scheme: recap
 aux_links:
@@ -25,3 +24,9 @@ back_to_top_text: "Back to top"
 
 # Remove .html from pages
 permalink: pretty
+
+# Set og:image for social media sharing
+defaults:
+  -
+    values:
+      image: "/assets/images/recap-splash.png"
