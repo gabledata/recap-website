@@ -1,6 +1,6 @@
 url: "https://recap.build"
 title: "Recap"
-description: "Read schemas from web service, databases, and schema registries in a standard format."
+description: "Read and write schemas from web service, databases, and schema registries in a standard format."
 theme: just-the-docs
 logo: "/assets/images/recap-logo.png"
 color_scheme: recap
