@@ -10,6 +10,7 @@ aux_links:
     - "//github.com/recap-build/recap"
 plugins:
   - jekyll-redirect-from
+  - jekyll-seo-tag
 
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true

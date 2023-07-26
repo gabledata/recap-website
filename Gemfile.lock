@@ -79,6 +79,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll
   jekyll-redirect-from
+  jekyll-seo-tag
   just-the-docs
 
 BUNDLED WITH
