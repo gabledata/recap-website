@@ -30,3 +30,9 @@ defaults:
   -
     values:
       image: "/assets/images/recap-splash.png"
+
+# Just the docs callouts
+callouts:
+  note:
+    title: Note
+    color: blue
