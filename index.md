@@ -24,15 +24,15 @@ Recap is a Python library that reads and writes schemas from web services, datab
 
 | Format      | Read | Write |
 | ----------- | ----------- | ----------- |
-| [Avro](https://recap.build/docs/converters/avro/) | ✅ | ✅ |
-| [Protobuf](https://recap.build/docs/converters/protobuf/) | ✅ | ✅ |
-| [JSON Schema](https://recap.build/docs/converters/json-schema/) | ✅ |  |
-| [Snowflake](https://recap.build/docs/readers/snowflake/) | ✅ |  |
-| [PostgreSQL](https://recap.build/docs/readers/postgresql/) | ✅ |  |
-| [MySQL](https://recap.build/docs/readers/mysql/) | ✅ |  |
-| [BigQuery](https://recap.build/docs/readers/bigquery/) | ✅ |  |
-| [Confluent Schema Registry](https://recap.build/docs/readers/confluent-schema-registry/) | ✅ |  |
-| [Hive Metastore](https://recap.build/docs/readers/hive-metastore/) | ✅ |  |
+| [Avro](/docs/converters/avro/) | ✅ | ✅ |
+| [Protobuf](/docs/converters/protobuf/) | ✅ | ✅ |
+| [JSON Schema](/docs/converters/json-schema/) | ✅ | ✅ |
+| [Snowflake](/docs/readers/snowflake/) | ✅ |  |
+| [PostgreSQL](/docs/readers/postgresql/) | ✅ |  |
+| [MySQL](/docs/readers/mysql/) | ✅ |  |
+| [BigQuery](/docs/readers/bigquery/) | ✅ |  |
+| [Confluent Schema Registry](/docs/readers/confluent-schema-registry/) | ✅ |  |
+| [Hive Metastore](/docs/readers/hive-metastore/) | ✅ |  |
 
 ## Supported Types
 
