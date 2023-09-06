@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "BigQuery"
-parent: "Readers"
+parent: "Integrations"
 ---
 
 # BigQuery

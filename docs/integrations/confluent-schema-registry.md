@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Confluent Schema Registry"
-parent: "Readers"
+parent: "Integrations"
 ---
 
 # Confluent Schema Registry

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "JSON Schema"
-parent: "Converters"
+parent: "Integrations"
 ---
 
 # JSON Schema

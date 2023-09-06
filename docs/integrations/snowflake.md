@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Snowflake"
-parent: "Readers"
+parent: "Integrations"
 ---
 
 # Snowflake

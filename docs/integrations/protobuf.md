@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Protobuf"
-parent: "Converters"
+parent: "Integrations"
 ---
 
 # Protobuf
