@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "MySQL"
-parent: "Readers"
+parent: "Integrations"
 ---
 
 # MySQL

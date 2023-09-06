@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Hive Metastore"
-parent: "Readers"
+parent: "Integrations"
 ---
 
 # Hive Metastore

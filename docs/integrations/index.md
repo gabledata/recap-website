@@ -1,5 +1,5 @@
 ---
 layout: default
-title: "Converters"
+title: "Integrations"
 has_children: true
 ---
