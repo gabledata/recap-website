@@ -21,18 +21,32 @@ You should understand the following concepts before using Recap.
 
 Systems are Recap's term for remote schema sources. They're typically databases, schema registries, data catalogs, and so on.
 
-Each system has a name and a URL. Systems are normally defined as environment variables. See Recap's [configuration](/docs/configuration) documentation for more information.
+Each system has a name and a URL. Systems are normally defined as environment variables.
+
+```bash
+export MY_PG=postgresql://user:pass@host:port/dbname
+```
+
+See Recap's [configuration](/docs/configuration) documentation for more information.
 
 ## Paths
 
-Recap's takes a path as an argument when listing or reading schemas. Each system has its own path structure. For example, PostgreSQL uses the following path structure:
+Recap takes a path as an argument when listing or reading schemas. Each system has its own path structure. For example, PostgreSQL has paths like:
 
 ```
-/[system]/[database]/[schema]/[table]
+[system]/[database]/[schema]/[table]
+```
+
+You can browse paths using the `ls` command:
+
+```bash
+recap ls my_pg
+recap ls my_pg/testdb
+recap ls my_pg/testdb/public
 ```
 
 {: .note }
-The leading `/` is optional.
+This example uses Recap's [CLI](/docs/cli). You can also use Recap's [Python API](/docs/python) or [gateway](/docs/gateway).
 
 ## Clients
 
