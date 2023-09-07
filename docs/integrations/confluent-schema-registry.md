@@ -10,31 +10,51 @@ parent: "Integrations"
 1. TOC
 {:toc}
 
-The `ConfluentRegistryReader` class is used to convert schemas registered in a Confluent Schema Registry to Recap types. The main method in this class is `to_recap`.
+## Connecting
 
-## `to_recap`
+### CLI
 
-```python
-def to_recap(self, topic: str) -> StructType
+```bash
+recap add my_csr http+csr://my-registry:8081
 ```
 
-The `to_recap` method takes in the name of a Kafka topic, fetches the associated schema from the Confluent Schema Registry, and converts it to a Recap `StructType`. The method supports Avro, JSON, and Protobuf schemas.
+### Environment Variables
 
-### Example
-
-```python
-from confluent_kafka.schema_registry import SchemaRegistryClient
-from recap.readers.confluent_registry import ConfluentRegistryReader
-
-registry = SchemaRegistryClient({"url": "http://my-registry:8081"})
-recap_schema = ConfluentRegistryReader(registry).to_recap("my_topic")
+```bash
+export RECAP_SYSTEM__MY_CSR=http+csr://my-registry:8081
 ```
 
-In this example, `recap_schema` will be a `StructType` that represents the schema of the value of messages in `my_topic`.
+### Python API
+
+```python
+from recap.clients import create_client
+
+with create_client("http+csr://my-registry:8081") as client:
+    client.ls()
+```
+
+## Format
+
+### URLs
+
+Recap's [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) client takes a URL pointing to the Confluent Schema Registry HTTP server.
+
+{: .note }
+The scheme must be `http+csr` or `https+csr`. The `+csr` suffix is required to distinguish this client from other clients that also use HTTP connections (similar to [SQLAlchemy's `dialect+driver` format](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))
+
+### Paths
+
+Recap's Confluent Schema Registry paths are formatted as:
+
+```
+[system]/[topic]
+```
+
+You may optionally include `-key` or `-value` at the end of the path to specify the key or value schema, respectively. If no suffix is supplied `-value` is assumed.
 
 ## Type Conversion
 
-The `to_recap` method uses the `AvroConverter`, `JSONSchemaConverter`, and `ProtobufConverter` classes to convert schemas, based on their type. 
+`ConfluentRegistryClient.get_schema()` uses the `AvroConverter`, `JSONSchemaConverter`, and `ProtobufConverter` classes to convert schemas, based on their type. 
 
 Please see the individual documentation for these classes for information on how they convert types:
 

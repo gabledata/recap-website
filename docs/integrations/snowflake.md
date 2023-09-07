@@ -10,19 +10,51 @@ parent: "Integrations"
 1. TOC
 {:toc}
 
-The `SnowflakeReader` class is used to convert Snowflake table schemas to Recap types. The main method in this class is `to_recap`.
+## Connecting
 
-## `to_recap`
+### CLI
 
-```python
-def to_recap(self, table: str, schema: str, catalog: str) -> StructType
+```bash
+recap add my_snowflake snowflake://user:pass@my-account
 ```
 
-The `to_recap` method is used to translate a specific Snowflake table to a `StructType` (a Recap type). The method takes the table name, schema, and catalog as arguments and uses these to query the Snowflake `information_schema.columns` view for the metadata of the specified table. It constructs a `StructType` from these column definitions, converting each column to the corresponding Recap type.
+### Environment Variables
+
+```bash
+export RECAP_SYSTEM__MY_SNOWFLAKE=snowflake://user:pass@my-account
+```
+
+### Python API
+
+```python
+from recap.clients import create_client
+
+with create_client("snowflake://user:pass@my-account") as client:
+    client.ls("testdb")
+```
+
+## Format
+
+### URLs
+
+Recap's Snowflake client uses [Snowflake's SQLAlchemy URL format](https://github.com/snowflakedb/snowflake-sqlalchemy#connection-parameters):
+
+```
+snowflake://[user_login_name]:[password]@[account_name]/[database_name]/[schema_name]?warehouse=[warehouse_name]&role=[role_name]
+```
+
+### Paths
+
+Recap's PostgreSQL paths are formatted as:
+
+```
+[system]/[database]/[schema]/[table]
+```
+
+{: .note }
+The `schema` component is not a data model schema. It's [Snowflake's schema](https://docs.snowflake.com/en/sql-reference/ddl-database), which is similar to a namespace. `schema` is usually `public`.
 
 ## Type Conversion
-
-This table shows the corresponding Recap types for each Snowflake type, along with the associated attributes:
 
 | Snowflake Type | Recap Type |
 |-----------------|------------------------------------|
@@ -38,4 +70,4 @@ This table shows the corresponding Recap types for each Snowflake type, along wi
 
 ## Limitations and Constraints
 
-The conversion functions raise a `ValueError` exception if the conversion is not possible due to the Snowflake data type being unknown.
+The conversion functions raise a `ValueError` exception if the conversion is not possible.

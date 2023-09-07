@@ -10,27 +10,48 @@ parent: "Integrations"
 1. TOC
 {:toc}
 
-The `BigQueryReader` class is used to convert BigQuery table schemas to Recap types. The main method in this class is `to_recap`.
+## Connecting
 
-## `to_recap`
+### CLI
 
-```python
-def to_recap(self, dataset: str, table: str) -> StructType
+```bash
+recap add my_bq bigquery://
 ```
 
-The `to_recap` method takes in the name of a BigQuery dataset and table, and returns a Recap `StructType` that represents the BigQuery table schema.
+### Environment Variables
 
-### Example
-
-```python
-from google.cloud import bigquery
-from recap.readers.bigquery import BigQueryReader
-
-client = bigquery.Client()
-recap_schema = BigQueryReader(client).to_recap("my_dataset", "my_table")
+```bash
+export RECAP_SYSTEM__MY_BQ=bigquery://
 ```
 
-In this example, `recap_schema` will be a `StructType` that represents the schema of `my_table` in `my_dataset`.
+### Python API
+
+```python
+from recap.clients import create_client
+
+with create_client("bigquery://") as client:
+    client.ls("my_project")
+```
+
+## Format
+
+### URLs
+
+Recap's BigQuery URL format:
+
+```
+bigquery://<project>
+```
+
+### Paths
+
+Recap's BigQuery paths are formatted as:
+
+```
+[system]/[project]/[dataset]/[table]
+```
+
+The `BigQueryReader` class is used to read BigQuery table schemas as Recap schemas.
 
 ## Type Conversion
 

@@ -10,32 +10,45 @@ parent: "Integrations"
 1. TOC
 {:toc}
 
-The `HiveMetastoreReader` class is used to convert Hive table schemas into Recap types. This class can also be used to fetch and convert table statistics from Hive Metastore.
+## Connecting
 
-## `to_recap`
+### CLI
 
-```python
-def to_recap(
-    self,
-    database_name: str,
-    table_name: str,
-    include_stats: bool = False,
-) -> StructType
+```bash
+recap add my_hms thrift+hms://hive:password@localhost:9083
 ```
 
-The `to_recap` method takes in the name of a database and a table within that database, retrieves the associated schema from the Hive Metastore, and converts it into a Recap `StructType`. If `include_stats` is set to True, the method will also fetch table statistics from the Hive Metastore and include them in the returned `StructType`.
+### Environment Variables
 
-### Example
-
-```python
-from pymetastore.metastore import HMS
-from recap.readers.hive_metastore import HiveMetastoreReader
-
-with HMS.create("localhos", 9093) as client:
-  recap_schema = HiveMetastoreReader(client).to_recap("my_database", "my_table")
+```bash
+export RECAP_SYSTEM__MY_HMS=thrift+hms://hive:password@localhost:9083
 ```
 
-In this example, `recap_schema` will be a `StructType` that represents the schema of the `my_table` table in the `my_database` database.
+### Python API
+
+```python
+from recap.clients import create_client
+
+with create_client("thrift+hms://hive:password@localhost:9083") as client:
+    client.ls("testdb")
+```
+
+## Format
+
+### URLs
+
+Recap's Hive Metastore client takes the Thrift URL to the Hive Metastore.
+
+{: .note }
+The scheme must be `thrift+hms`. The `+hms` suffix is required to distinguish this client from other clients that also use Thrift connections (similar to [SQLAlchemy's `dialect+driver` format](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))
+
+### Paths
+
+Recap's Confluent Schema Registry paths are formatted as:
+
+```
+[system]/[database]/[table]
+```
 
 ## Type Conversion
 

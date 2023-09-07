@@ -10,31 +10,47 @@ parent: "Integrations"
 1. TOC
 {:toc}
 
-The `PostgresqlReader` class is used to convert PostgreSQL table schemas to Recap types. The main method in this class is `to_recap`.
+## Connecting
 
-## `to_recap`
+### CLI
 
-```python
-def to_recap(self, table: str, schema: str, catalog: str) -> StructType
+```bash
+recap add my_pg postgresql://postgres:password@localhost:5432
 ```
 
-The `to_recap` method takes in the name of a PostgreSQL table, schema, and catalog, and returns a Recap `StructType` that represents the PostgreSQL table schema.
+### Environment Variables
 
-### Example
-
-```python
-from psycopg2 import connect
-from recap.readers.postgresql import PostgresqlReader
-
-connection = connect(database="my_database", user="my_user", password="my_password")
-recap_schema = PostgresqlReader(connection).to_recap("my_table", "my_schema", "my_catalog")
+```bash
+export RECAP_SYSTEM__MY_PG=postgresql://postgres:password@localhost:5432
 ```
 
-In this example, `recap_schema` will be a `StructType` that represents the schema of `my_table` in `my_schema` within `my_catalog`.
+### Python API
+
+```python
+from recap.clients import create_client
+
+with create_client("postgresql://postgres:password@localhost:5432") as client:
+    client.ls("testdb")
+```
+
+## Format
+
+### URLs
+
+Recap's PostgreSQL client takes a PostgreSQL URL with an optional DB in the path.
+
+### Paths
+
+Recap's PostgreSQL paths are formatted as:
+
+```
+[system]/[database]/[schema]/[table]
+```
+
+{: .note }
+The `schema` component is not a data model schema. It's [PostgreSQL's schema](https://www.postgresql.org/docs/current/ddl-schemas.html), which is similar to a namespace. `schema` is usually `public`.
 
 ## Type Conversion
-
-This table shows the corresponding Recap types for each PostgreSQL type, along with the associated attributes:
 
 | PostgreSQL Type | Recap Type |
 |-----------------|------------------------------------|
@@ -53,4 +69,4 @@ This table shows the corresponding Recap types for each PostgreSQL type, along w
 
 ## Limitations and Constraints
 
-The conversion functions raise a `ValueError` exception if the conversion is not possible due to the PostgreSQL data type being unknown.
+The conversion functions raise a `ValueError` exception if the conversion is not possible.
