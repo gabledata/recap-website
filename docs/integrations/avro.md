@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Avro"
-parent: "Integrations"
+parent: Integrations
 ---
 
 # Avro
