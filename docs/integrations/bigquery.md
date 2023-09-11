@@ -51,7 +51,7 @@ Recap's BigQuery paths are formatted as:
 [system]/[project]/[dataset]/[table]
 ```
 
-The `BigQueryReader` class is used to read BigQuery table schemas as Recap schemas.
+The `BigQueryClient` class is used to read BigQuery table schemas as Recap schemas.
 
 ## Type Conversion
 

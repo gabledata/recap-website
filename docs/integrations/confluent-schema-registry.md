@@ -64,6 +64,6 @@ Please see the individual documentation for these classes for information on how
 
 ## Limitations and Constraints
 
-1. ConfluentRegistryReader does not support [schema references](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#schema-references).
+1. ConfluentRegistryClient does not support [schema references](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#schema-references).
 
 The conversion functions raise a `ValueError` exception if the conversion is not possible.
