@@ -14,9 +14,10 @@ Recap reads and writes schemas from web services, databases, and schema registri
 
 ## Components
 
-* Command Line Interface (CLI)
-* Stateless HTTP/JSON Gateway
-* Python API
+* [Command Line Interface (CLI)](/docs/cli/) - Read schemas from other systems using the terminal.
+* [Gateway](/docs/gateway/) - Read schemas from other systems using a stateless HTTP/JSON server.
+* [Schema Registry](/docs/registry/) - Store and retrieve Recap schemas using an HTTP/JSON server.
+* [Python API](/docs/python/) - Use Recap in your Python applications.
 
 ## Supported Formats
 

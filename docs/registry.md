@@ -47,7 +47,7 @@ The registry server is a simple [FastAPI](https://fastapi.tiangolo.com/) applica
 The registry will work out of the box without any configuration. Schemas are stored in `$RECAP_HOME/schemas`. You can change the storage location by setting the following environment variables:
 
 - `RECAP_REGISTRY_STORAGE_URL`: The URL to the storage location. Can be a local filesystem path or a URL to an object store like S3.
-- `RECAP_REGISTRY_STORAGE_URL_ARGS`: Additional arguments to pass to the storage URL. 
+- `RECAP_REGISTRY_STORAGE_URL_ARGS`: Additional arguments to pass to the storage URL.
 
 The registry is using [fsspec](https://filesystem-spec.readthedocs.io/en/latest/) to store schemas, so fsspec-compatible URLs will work. See the [fsspec implementations](https://filesystem-spec.readthedocs.io/en/latest/api.html#other-known-implementations) and [fsspec documentation](https://filesystem-spec.readthedocs.io/en/latest/usage.html) for more information.
 
