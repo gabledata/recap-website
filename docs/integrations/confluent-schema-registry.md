@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_csr http+csr://my-registry:8081
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_CSR=http+csr://my-registry:8081
+recap ls http+csr://my-registry:8081/some/root/path
+recap schema http+csr://my-registry:8081/some/root/path/my-topic
 ```
 
 ### Python API
@@ -29,28 +24,23 @@ export RECAP_SYSTEM__MY_CSR=http+csr://my-registry:8081
 ```python
 from recap.clients import create_client
 
-with create_client("http+csr://my-registry:8081") as client:
+with create_client("http+csr://my-registry:8081/some/root/path") as client:
     client.ls()
+    client.schema("my-topic")
 ```
 
-## Format
+## URLs
 
-### URLs
+Recap's [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) client takes a URL pointing to the Confluent Schema Registry HTTP server and an optional subject path.
 
-Recap's [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) client takes a URL pointing to the Confluent Schema Registry HTTP server.
+```
+http+csr://[host]:[port]/[path*]/[subject]
+```
+
+You may optionally include `-key` or `-value` at the end of the subject name to specify the key or value schema, respectively. If no suffix is supplied `-value` is assumed.
 
 {: .note }
 The scheme must be `http+csr` or `https+csr`. The `+csr` suffix is required to distinguish this client from other clients that also use HTTP connections (similar to [SQLAlchemy's `dialect+driver` format](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))
-
-### Paths
-
-Recap's Confluent Schema Registry paths are formatted as:
-
-```
-[system]/[topic]
-```
-
-You may optionally include `-key` or `-value` at the end of the path to specify the key or value schema, respectively. If no suffix is supplied `-value` is assumed.
 
 ## Type Conversion
 

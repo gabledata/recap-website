@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_hms thrift+hms://hive:password@localhost:9083
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_HMS=thrift+hms://hive:password@localhost:9083
+recap ls thrift+hms://hive:password@localhost:9083
+recap schema thrift+hms://hive:password@localhost:9083/testdb/testtable
 ```
 
 ### Python API
@@ -31,24 +26,19 @@ from recap.clients import create_client
 
 with create_client("thrift+hms://hive:password@localhost:9083") as client:
     client.ls("testdb")
+    client.schema("testdb", "testtable")
 ```
 
-## Format
-
-### URLs
+## URLs
 
 Recap's Hive Metastore client takes the Thrift URL to the Hive Metastore.
 
+```
+thrift+hms://[username]:[password]@[host]:[port]/[database]/[table]
+```
+
 {: .note }
 The scheme must be `thrift+hms`. The `+hms` suffix is required to distinguish this client from other clients that also use Thrift connections (similar to [SQLAlchemy's `dialect+driver` format](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))
-
-### Paths
-
-Recap's Confluent Schema Registry paths are formatted as:
-
-```
-[system]/[database]/[table]
-```
 
 ## Type Conversion
 

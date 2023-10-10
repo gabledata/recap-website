@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_pg postgresql://postgres:password@localhost:5432
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_PG=postgresql://postgres:password@localhost:5432
+recap ls postgresql://user:pass@localhost:5432
+recap schema postgresql://user:pass@localhost:5432/testdb/public/test_types
 ```
 
 ### Python API
@@ -29,22 +24,17 @@ export RECAP_SYSTEM__MY_PG=postgresql://postgres:password@localhost:5432
 ```python
 from recap.clients import create_client
 
-with create_client("postgresql://postgres:password@localhost:5432") as client:
+with create_client("postgresql://user:pass@localhost:5432") as client:
     client.ls("testdb")
+    client.schema("testdb", "public", "test_types")
 ```
 
-## Format
-
-### URLs
+## URLs
 
 Recap's PostgreSQL client takes a PostgreSQL URL with an optional DB in the path.
 
-### Paths
-
-Recap's PostgreSQL paths are formatted as:
-
 ```
-[system]/[database]/[schema]/[table]
+postgresql://[username]:[password]@[host]:[port]/[database]/[schema]/[table]
 ```
 
 {: .note }

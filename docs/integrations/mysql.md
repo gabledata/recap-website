@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_sql mysql://mysql:password@localhost:3306
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_SQL=mysql://mysql:password@localhost:3306
+recap ls mysql://user:pass@localhost:3306/testdb
+recap schema mysql://user:pass@localhost:3306/testdb/testtable
 ```
 
 ### Python API
@@ -29,22 +24,17 @@ export RECAP_SYSTEM__MY_SQL=mysql://mysql:password@localhost:3306
 ```python
 from recap.clients import create_client
 
-with create_client("mysql://mysql:password@localhost:3306") as client:
+with create_client("mysql://user:pass@localhost:3306") as client:
     client.ls("testdb")
+    client.schema("testdb", "testtable")
 ```
 
-## Format
-
-### URLs
+## URLs
 
 Recap's MySQL client takes a MySQL URL with an optional DB in the path.
 
-### Paths
-
-Recap's MySQL paths are formatted as:
-
 ```
-[system]/[database]/[table]
+mysql://[username]:[password]@[host]:[port]/[database]/[table]
 ```
 
 ## Type Conversion

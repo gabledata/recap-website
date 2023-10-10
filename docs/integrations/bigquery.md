@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_bq bigquery://
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_BQ=bigquery://
+recap ls bigquery://
+recap schema bigquery://some-project/some-dataset/some-table
 ```
 
 ### Python API
@@ -31,27 +26,16 @@ from recap.clients import create_client
 
 with create_client("bigquery://") as client:
     client.ls("my_project")
+    client.schema("some-project", "some-dataset", "some-table")
 ```
 
-## Format
-
-### URLs
+## URLs
 
 Recap's BigQuery URL format:
 
 ```
-bigquery://<project>
+bigquery://[project]/[dataset]/[table]
 ```
-
-### Paths
-
-Recap's BigQuery paths are formatted as:
-
-```
-[system]/[project]/[dataset]/[table]
-```
-
-The `BigQueryClient` class is used to read BigQuery table schemas as Recap schemas.
 
 ## Type Conversion
 

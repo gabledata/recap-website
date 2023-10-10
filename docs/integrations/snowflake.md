@@ -15,13 +15,8 @@ parent: "Integrations"
 ### CLI
 
 ```bash
-recap add my_snowflake snowflake://user:pass@my-account
-```
-
-### Environment Variables
-
-```bash
-export RECAP_SYSTEM__MY_SNOWFLAKE=snowflake://user:pass@my-account
+recap ls snowflake://user:pass@my-account/testdb?warehouse=some_dwh&role=some_role
+recap schema snowflake://user:pass@my-account/testdb/public/testtable?warehouse=some_dwh&role=some_role
 ```
 
 ### Python API
@@ -31,24 +26,15 @@ from recap.clients import create_client
 
 with create_client("snowflake://user:pass@my-account") as client:
     client.ls("testdb")
+    client.schema("testdb", "public", "testtable")
 ```
 
-## Format
-
-### URLs
+## URLs
 
 Recap's Snowflake client uses [Snowflake's SQLAlchemy URL format](https://github.com/snowflakedb/snowflake-sqlalchemy#connection-parameters):
 
 ```
-snowflake://[user_login_name]:[password]@[account_name]/[database_name]/[schema_name]?warehouse=[warehouse_name]&role=[role_name]
-```
-
-### Paths
-
-Recap's PostgreSQL paths are formatted as:
-
-```
-[system]/[database]/[schema]/[table]
+snowflake://[username]:[password]@[account]/[database]/[schema]/[table]?warehouse=[warehose]&role=[role]
 ```
 
 {: .note }

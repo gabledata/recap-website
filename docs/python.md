@@ -40,7 +40,7 @@ with create_client('postgresql://user:pass@host:port/dbname') as client:
     struct = client.get_schema("testdb", "public", "users")
 ```
 
-See the [integrations](/docs/integrations) page for each systme's URL format.
+See the [integrations](/docs/integrations) page for each system's URL format.
 
 ## Converters
 
