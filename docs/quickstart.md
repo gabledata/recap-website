@@ -137,7 +137,7 @@ curl http://localhost:8000/gateway/schema/postgresql://user:pass@host:port/testd
 ```
 
 {: .warning}
-This example includes `user:pass` in the URL. This works, but is not recommended for security reasons. You should configure Recap's server to use the `RECAP_URLS` environment variable instead. See the [gateway configuration](/docs/gateway/#configuration) documentation for more details.
+This example includes `user:pass` in the URL. This works, but is not recommended for security reasons. You should configure Recap's server to use the `RECAP_URLS` environment variable instead. See the [configuration](/docs/configuration/#recap_urls) documentation for more details.
 
 {: .note}
 Recap's HTTP/JSON gateway does not require a database or any persistence. It just connects to external systems in realtime to fetch schemas.
