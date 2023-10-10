@@ -15,114 +15,64 @@ Interacting with Recap from the command line.
 
 ## Introduction
 
-Recap ships with a command line interface (CLI). You can use it to manage configuration, browse systems, read schemas, and start Recap's [gateway server](/docs/gateway).
+Recap ships with a command line interface (CLI). You can use it to manage configuration, browse systems, read schemas, and start Recap's [gateway](/docs/gateway) and [registry](/docs/registry).
 
 ## Commands
 
-### `add`
-
-Add a system to the config.
-
-#### Usage
-{: .no_toc }
-
-```
-recap add [OPTIONS] SYSTEM URL
-```
-
-#### Parameters
-{: .no_toc }
-
-| Option | Type | Description | Default | Required |
-| :-- | :-- | :-- | :-: | :-: |
-| SYSTEM | TEXT | The name of the system. | | YES |
-| URL | TEXT | URL for the system. | | YES |
-
-#### Example
-{: .no_toc }
-
-```
-recap add my_pg postgresql://user:pass@host:port/dbname
-```
-
 ### `ls`
 
-List the children of a path.
+List the children of a URL.
 
 #### Usage
 {: .no_toc }
 
 ```
-recap ls [OPTIONS] [PATH]
+recap ls [OPTIONS] [URL]
 ```
 
 #### Parameters
 {: .no_toc }
 
-| Option | Type | Description | Default | Required |
-| :-- | :-- | :-- | :-: | :-: |
-| PATH | TEXT | Path to list children of. | / | YES |
+| Option | Type | Description | Default |
+| :-- | :-- | :-- | :-: |
+| URL | TEXT | URL to parent. | - |
 
 #### Example
 {: .no_toc }
 
 ```
-recap ls my_pg/testdb
-```
-
-### `remove`
-
-Remove a system from the config.
-
-#### Usage
-{: .no_toc }
-
-```
-recap remove [OPTIONS] SYSTEM URL
-```
-
-#### Parameters
-{: .no_toc }
-
-| Option | Type | Description | Default | Required |
-| :-- | :-- | :-- | :-: | :-: |
-| SYSTEM | TEXT | The name of the system. | | YES |
-
-#### Example
-{: .no_toc }
-
-```
-recap remove my_pg
+recap ls postgres://user:pass@localhost:5432/testdb
 ```
 
 ### `schema`
 
-Get the schema of a path.
+Get the schema of a URL.
 
 #### Usage
 {: .no_toc }
 
 ```
-recap schema [OPTIONS] [PATH]
+recap schema [OPTIONS] URL
 ```
 
 #### Parameters
 {: .no_toc }
 
-| Option | Type | Description | Default | Required |
-| :-- | :-- | :-- | :-: | :-: |
-| PATH | TEXT | Path to get schema of. | / | YES |
+| Option | Type | Description | Default |
+| :-- | :-- | :-- | :-: |
+| URL | TEXT | URL to schema. | - |
+| \-\-output-format  -of | TEXT | Schema output format. `[avro|json|protobuf|recap]` | recap |
 
 #### Example
 {: .no_toc }
 
 ```
-recap schema my_pg/testdb/public/my_table
+recap schema postgres://user:pass@localhost:5432/testdb/public/test_types
 ```
 
 ### `serve`
 
-Start Recap's HTTP/JSON gateway server. Uses [uvicorn](https://www.uvicorn.org/) under the hood.
+Start Recap's HTTP/JSON server.
 
 #### Usage
 {: .no_toc }
@@ -134,11 +84,11 @@ recap serve [OPTIONS]
 #### Parameters
 {: .no_toc }
 
-| Option | Type | Description | Default | Required |
-| :-- | :-- | :-- | :-: | :-: |
-| `--host` | TEXT | Hostname to bind the server to. | / | YES |
-| `--port` | TEXT | Port to bind the server to. | 8000 | YES |
-| `--log-level` | TEXT | Log level for the server. | info | YES |
+| Option | Type | Description | Default |
+| :-- | :-- | :-- | :-: |
+| `--host` | TEXT | Hostname to bind the server to. | 127.0.0.1 |
+| `--port` | TEXT | Port to bind the server to. | 8000 |
+| `--log-level` | TEXT | Log level for the server. | info |
 
 #### Example
 {: .no_toc }
