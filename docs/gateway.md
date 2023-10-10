@@ -15,7 +15,7 @@ Running Recap's stateless HTTP/JSON gateway server.
 
 ## Overview
 
-Recap comes with a stateless HTTP/JSON server that you can use to query systems and schemas. The server doesn't require any database or storage. It's a simple gateway that connects to systems and returns Recap schemas.
+Recap's HTTP/JSON server comes with a gateway API that you can use to query systems and schemas. The server doesn't require any database or storage. It's simply a gateway that connects to systems and returns Recap schemas.
 
 ## Usage
 
@@ -30,27 +30,25 @@ See the [CLI](/docs/cli#serve) documentation for additional `serve` parameters a
 {: .note }
 The gateway server is a simple [FastAPI](https://fastapi.tiangolo.com/) application. The `serve` command starts the FastAPI application using [uvicorn](https://www.uvicorn.org/). You may choose any ASGI-compatible server. See [FastAPI's documentation](https://fastapi.tiangolo.com/deployment/manually/) for more information.
 
+You can query a system like so:
+
+```bash
+curl http://localhost:8000/gateway/ls/postgresql://user:pass@localhost:5432/testdb
+```
+
+And read a schema:
+
+```bash
+curl http://localhost:8000/gateway/schema/postgresql://user:pass@localhost:5432/testdb/public/test_types
+```
+
 ## Configuration
 
-You must define Recap "system" connections as environment variables before starting the gateway server. Recap uses these environment variables to connect to systems.
+The gateway will work out of the box without any configuration. Any URL with a compatible [client integration](/docs/integrations/) will work. However, you can configure Recap to save access credentials in an environment variable using the `RECAP_URLS` environment variable.
 
-Here's an example for a PostgreSQL system:
+- `RECAP_URLS`: A JSON-encoded list of URLs to connect to.
 
-```bash
-export MY_PG=postgresql://user:pass@host:port/dbname
-```
-
-Or you can use Recap's CLI:
-
-```bash
-recap add my_pg postgresql://user:pass@host:port/dbname
-```
-
-After running `recap serve`, you can query the system using the `my_pg` name:
-
-```bash
-curl http://localhost:8000/ls/my_pg
-```
+See the [configuration](/docs/configuration) for more information on the `RECAP_URLS` environment variable.
 
 You can also set environment variables in .env files or secrets files. See Recap's [configuration](/docs/configuration) documentation for more information.
 
@@ -58,8 +56,8 @@ You can also set environment variables in .env files or secrets files. See Recap
 
 Recap's gateway server exposes a very simple HTTP/JSON API with two endpoints:
 
-* `/ls/[path*]` - List children in a system path.
-* `/schema/[path*]` - Get a schema for a system path.
+* `/gateway/ls/[url]` - List children of a URL.
+* `/gateway/schema/[url]` - Get a schema for a URL.
 
 ### OpanAPI
 
@@ -86,7 +84,7 @@ You can run the server using the `docker run` command:
 ```bash
 docker run \
     -p 8000:8000 \
-    -e "RECAP_SYSTEMS__PG=postgresql://user:pass@localhost:5432/testdb" \
+    -e "RECAP_URLS='[\"postgresql://user:pass@pg:5432/testdb\"]'" \
     ghcr.io/recap-build/recap:latest
 ```
 

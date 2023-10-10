@@ -32,26 +32,36 @@ Recap uses [pydantic-settings](https://docs.pydantic.dev/latest/usage/pydantic_s
 | :-- | :-- | :-- | :-: | :-: |
 | RECAP_CONFIG | TEXT | Path to the config file. | ~/.recap/config | YES |
 | RECAP_SECRETS | TEXT | Path to the secrets directory. | | NO |
-| RECAP_SYSTEMS__[SYSTEM] | TEXT | A system name/URL pair that tells Recap how to connect to a system. | | NO |
+| RECAP_URLS | TEXT| List of URLs in JSON format containing authorization credentials. | | NO |
+| RECAP_REGISTRY_STORAGE_URL | TEXT | Location to store registry schemas in an [`fsspec`-compatible URL format](https://filesystem-spec.readthedocs.io/en/latest/api.html#other-known-implementations). | | NO |
+| RECAP_REGISTRY_STORAGE_ARGS | TEXT | Additional attributes to supply when creating the registry's `fsspec` filesystem object. | | NO |
+
+#### RECAP_URLS
+
+The `RECAP_URLS` environment variable is important. It allows you to define connection strings for URLs that contain login credentials like usernames and passwords or authentication tokens.
+
+For example, if you have a URL like `postgresql://user:pass@localhost:5432/testdb`, you can set the `RECAP_URLS` environment variable like so:
+
+```bash
+export RECAP_URLS='["postgresql://some_user:some_pass@localhost:5432/testdb"]'
+```
+
+All `ls` or `schema` calls for the URL will use the credentials defined in the environment variable.
+
+You don't need to specify a full path for URL credentials. Recap will substitute in any username, password, or query parameters that are defined in the environment variable, so this command:
+
+```bash
+curl http://localhost:8000/gateway/ls/postgresql://localhost:5432/testdb/public
+```
+
+Would be translated to:
+
+```bash
+curl http://localhost:8000/gateway/ls/postgresql://some_user:some_pass@localhost:5432/testdb/public
+```
 
 {: .note }
-The `RECAP_SYSTEMS__` environment variable is a special case. It's used to configure systems. The `SYSTEM` part of the variable name is the name of the system. The value is the URL to connect to the system. For example, `RECAP_SYSTEMS__MY_PG=postgresql://user:pass@host:port/dbname` will configure a system called `my_pg` to connect to a PostgreSQL database.
-
-## CLI
-
-Recap's CLI has [`add`](/docs/cli#add) and [`remove`](/docs/cli#remove) commands to add and remove systems from Recap's config file (`RECAP_CONFIG`). These commands are just shortcuts for editing the config file directly.
-
-### Add a System
-
-```bash
-recap add my_pg postgresql://user:pass@host:port/dbname
-```
-
-### Remove a System
-
-```bash
-recap remove my_pg
-```
+The URL matching is done on the scheme ("postgresql" in our example) and netloc ("localhost:5432" in our example) for a URL.
 
 ## Dotenv
 
@@ -71,20 +81,10 @@ See [pydantic-settings](https://docs.pydantic.dev/latest/usage/pydantic_settings
 
 Recap supports a secrets directory (`RECAP_SECRETS`) that contains files with secrets. Each file's name corrseponds to its environment variable name, and each file's contents are the environment variable's value.
 
-For example, if Recap is configured to use `/path/to/secrets` as its secrets directory, and `/path/to/secrets/recap_systems__my_pg` contains `postgresql://localhost:5432/testdb`, then Recap will see `RECAP_SYSTEMS__MY_PG`'s value as `postgresql://localhost:5432/testdb`.
-
-{: .warning }
-> If you want to set more than one system, you'll need to use the secret filename `recap_systems`. The contents should be a JSON-encoded map from system name to system URL. For example:
-> 
-> ```json
-> {
->   "my_bq": "bigquery://",
->   "my_pg": "postgresql://localhost:5432/testdb"
-> }
-> ```
+For example, if Recap is configured to use `/path/to/secrets` as its secrets directory, and `/path/to/secrets/recap_urls` contains `["postgresql://user:passlocalhost:5432/testdb"]`, then Recap will use the credentials defined in the file for any `ls` or `schema` calls for the URL.
 
 See [pydantic-settings](https://docs.pydantic.dev/latest/usage/pydantic_settings#secrets)'s secrets section for more information.
 
 ### Docker
 
-If you're deploying Recap's [gateway](/docs/gateway) in Docker, see the [Gateway Docker](/docs/gateway#docker) documentation and [pydantic-settings](https://docs.pydantic.dev/latest/usage/pydantic_settings/#use-case-docker-secrets) for Docker secrets instructions.
+If you're deploying Recap's server in Docker, see the [gateway](/docs/gateway#docker) and [registry](/docs/registry#docker) documentation and [pydantic-settings](https://docs.pydantic.dev/latest/usage/pydantic_settings/#use-case-docker-secrets) for Docker secrets instructions.
