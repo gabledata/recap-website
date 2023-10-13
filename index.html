@@ -1,0 +1,376 @@
+---
+title: Recap
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="generator" content="Jekyll v4.3.2" />
+    <meta property="og:title" content="Recap" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="Work with your web service, database, and streaming schemas in a single format." />
+    <meta property="og:description" content="Work with your web service, database, and streaming schemas in a single format." />
+    <meta property="og:url" content="https://recap.build/" />
+    <meta property="og:site_name" content="Recap" />
+    <meta property="og:image" content="https://recap.build/assets/images/recap-splash.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://recap.build/assets/images/recap-splash.png" />
+    <meta property="twitter:title" content="Recap" />
+    <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"Work with your web service, database, and streaming schemas in a single format.","headline":"Recap","image":"https://recap.build/assets/images/recap-splash.png","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://recap.build/assets/images/recap-logo.png"}},"url":"https://recap.build/"}</script>
+    <title>Recap</title>
+    <link rel="canonical" href="https://recap.build/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/95d803e842.js" crossorigin="anonymous"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-image: url("/assets/images/grid-bg.png");
+        color: grey;
+        line-height: 1.5;
+        margin: 1rem 1rem 0 1rem;
+      }
+      a {
+        color: #FFF;
+        text-decoration: none;
+      }
+      div.container {
+        max-width: 1024px;
+        margin: 0 auto;
+      }
+      h1, h2 {
+        font-family: 'Rubik', sans-serif;
+        font-weight: 500;
+        color: white;
+        margin: 0;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      h2 {
+        font-size: 2rem;
+      }
+      div.hero {
+        margin: 15% 0;
+      }
+      p.hero-copy {
+        font-size: 1.5rem;
+        width: 50%;
+        margin: 1.25rem 0;
+      }
+      p.copy {
+        font-size: 1.25rem;
+        width: 85%;
+      }
+      div.button {
+        background-color: #00FF00;
+        color: black;
+        font-family: 'Rubik', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        height: 48px;
+        padding-left: 1rem;
+        background-image: url('/assets/images/button-right.png');
+        background-position: right center;
+        background-repeat: no-repeat;
+        width: 12rem;
+        display: inline-flex;
+        align-items: center;
+        margin: 1rem 0;
+        line-height: 0;
+      }
+      img.logo {
+        width: 10rem;
+        margin: 1.5rem 0;
+      }
+      div.row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5rem;
+        margin: 15rem 0;
+      }
+      div.cell {
+        flex: 1;
+      }
+      div.header {
+        color: #FFF;
+      }
+      .header {
+          display: flex;
+          align-items: center;
+      }
+      .header > div:first-child {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+      }
+      .header > div:not(:first-child) {
+          margin-left: 2rem;
+      }
+      .header > div:last-child {
+        font-size: 2rem;
+      }
+
+      /* Transpile table */
+      .table-container {
+        margin: 0 auto;
+        border: 1px solid #999;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        color: #FFF;
+        text-align: center;
+      }
+      td {
+        padding: .15rem 0rem;
+      }
+      th {
+        padding: .5rem;
+        border-bottom: 1px solid #999;
+      }
+      td:first-child {
+        text-align: left;
+      }
+      tbody tr:first-child td {
+        padding-top: 1rem;  /* Adjust the value as needed */
+      }
+
+      /* YAML syntax highlight */
+      .yaml {
+        color: #FFF;
+      }
+      .yaml .key {
+        color: #FF974B;
+      }
+      .yaml .string {
+        color: #00FF00;
+      }
+      .yaml .int {
+        color: #FF974B;
+      }
+
+      /* Python syntax highlight */
+      .python {
+        color: #FFF;
+      }
+      .python .reserved {
+        color: #BE6CFF;
+      }
+      .python .package {
+        color: #00FF00;
+      }
+      .python .method {
+        color: #FFF278;
+      }
+      .python .variable {
+        color: #00F0FF;
+      }
+      .python .string {
+        color: #FF974B;
+      }
+      .registry {
+        color: #FFF;
+        font-size: 15rem;
+        text-align: center;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 1024px) {
+        p.hero-copy {
+          width: 100%;
+        }
+        div.row {
+          flex-direction: column;
+          gap: 0;
+          align-items: center;
+        }
+        .cell {
+          margin-bottom: 20px;
+        }
+        .reversed:nth-child(1) {
+          order: 2;
+        }
+        .reversed:nth-child(2) {
+          order: 1;
+        }
+        html, body {
+          overflow-x: hidden;
+        }
+        body {
+          position: relative
+        }
+        code.python {
+          font-size: .75em;
+        }
+        h1 {
+          line-height: 1em;
+        }
+        .table-row-cell {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div>
+          <img class="logo" src="/assets/images/recap-logo-white.png" />
+        </div>
+        <div>
+          <a href="/docs/quickstart">Docs</a>
+        </div>
+        <div>
+          <i class="fa-brands fa-github"></i>
+        </div>
+      </div>
+      <div class="hero">
+        <h1>Schemas made easy</h1>
+        <p class="hero-copy">Work with your web service, database, and streaming schemas in a single format.</p>
+        <a href="/docs/quickstart">
+          <div class="button">
+            Get started
+          </div>
+        </a>
+      </div>
+      <div class="row">
+        <div class="cell reversed table-row-cell">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Read</th>
+                  <th>Write</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Avro</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                </tr>
+                <tr>
+                  <td>Protobuf</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                </tr>
+                <tr>
+                  <td>JSON Schema</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                </tr>
+                <tr>
+                  <td>Snowflake</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>PostgreSQL</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>MySQL</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>BigQuery</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Confluent Registry</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Hive Metastore</td>
+                  <td><i class="fas fa-check-circle"></i></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="cell reversed">
+          <h2>Transpile schemas</h2>
+          <p class="copy">
+            Convert back and forth between all of the schemas in your organization. No more manual conversions.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <h2>Define schemas in Recap</h2>
+          <p class="copy">
+            Use Recap schemas as your source of truth. Generate Protobuf, Avro, JSON schema, and database tables.
+          </p>
+        </div>
+        <div class="cell">
+          <pre>
+            <code class="yaml">
+<span class="key">type</span>: <span class="string">struct</span>
+<span class="key">fields</span>:
+    - <span class="key">name</span>: <span class="string">id</span>
+      <span class="key">type</span>: <span class="string">int32</span>
+    - <span class="key">name</span>: <span class="string">email</span>
+      <span class="key">type</span>: <span class="string">string</span>
+      <span class="key">bytes</span>: <span class="int">255</span>
+    - <span class="key">name</span>: <span class="string">is_active</span>
+      <span class="key">type</span>: <span class="string">bool</span>
+    - <span class="key">name</span>: <span class="string">created_at</span>
+      <span class="key">type</span>: <span class="string">int64</span>
+      <span class="key">logical</span>: <span class="string">build.recap.Timestamp</span>
+      <span class="key">unit</span>: <span class="string">millisecond</span>
+            </code>
+          </pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell reversed">
+          <pre>
+            <code class="python">
+<span class="reserved">from</span> <span class="package">recap.clients</span> <span class="reserved">import</span> <span class="method">create_client</span>
+
+<span class="reserved">with</span> <span class="method">create_client</span>(<span class="string">"postgresql://localhost"</span>) <span class="reserved">as</span> <span class="variable">client</span>:
+    <span class="variable">schema</span> = <span class="variable">client</span>.get_schema(<span class="string">"db"</span>, <span class="string">"public"</span>, <span class="string">"users"</span>)
+            </code>
+          </pre>
+        </div>
+        <div class="cell reversed">
+          <h2>Build software for any schema</h2>
+          <p class="copy">
+            Recap ships with a Python API and HTTP gateway. Build tools and infrastructure that work with any organization's schemas and serialization formats.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <h2>Store schemas in one registry</h2>
+          <p class="copy">
+            Store your web service, database, and streaming schemas in Recap's schema registry. All in a single format.
+          </p>
+        </div>
+        <div class="cell">
+          <div class="registry">
+            <i class="fa-sharp fa-regular fa-object-intersect"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
