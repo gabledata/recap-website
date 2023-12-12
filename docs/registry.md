@@ -15,7 +15,7 @@ Running Recap's HTTP/JSON schema registry.
 
 ## Overview
 
-Recap comes with an HTTP/JSON server that you can use to store and retrieve Recap schemas (similar to [Confluent's Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) and [Buf's Schema Registry](hthttps://buf.build/docs/bsr/introduction)). The registry is useful for storing schemas in a central location that can be accessed by multiple applications.
+Recap comes with an HTTP/JSON server that you can use to store and retrieve Recap schemas (similar to [Confluent's Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) and [Buf's Schema Registry](https://buf.build/docs/bsr/introduction)). The registry is useful for storing schemas in a central location that can be accessed by multiple applications.
 
 ### Storage
 
