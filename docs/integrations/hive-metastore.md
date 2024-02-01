@@ -67,10 +67,6 @@ The scheme must be `thrift+hms`. The `+hms` suffix is required to distinguish th
 | UNIONTYPE                       | UnionType |
 | STRUCT                      | StructType |
 
-## Logging
-
-By default the Hive Metastore will log at INFO level. You can override this by setting the `HMS_LOGLEVEL` environment variable for the container.
-
 ## Limitations and Constraints
 
 The conversion functions raise a `ValueError` exception if the conversion is not possible.
