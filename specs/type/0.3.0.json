@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://recap.build/specs/type/0.2.0.json",
+  "$id": "https://recap.build/specs/type/0.3.0.json",
   "$ref": "#/$defs/RecapType",
   "$defs": {
     "RecapType": {
