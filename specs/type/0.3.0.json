@@ -40,9 +40,7 @@
         },
         {
           "$ref": "#/$defs/RecapAliasReference"
-        }
-      ],
-      "allOf": [
+        },
         {
           "$ref": "#/$defs/RecapLogicalTypes"
         }
@@ -415,242 +413,191 @@
         }
       },
       "not": {
-        "required": [
-          "alias"
-        ]
+        "required": ["alias"]
       }
     },
     "RecapLogicalTypes": {
-      "allOf": [
+      "oneOf": [
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "int"
-              },
-              "logical": {
-                "const": "build.recap.Date"
-              }
+          "properties": {
+            "type": {
+              "const": "int"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.Date"
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month",
+                "day",
+                "hour",
+                "minute",
+                "second",
+                "millisecond",
+                "microsecond",
+                "nanosecond",
+                "picosecond"
+              ]
+            }
           },
-          "then": {
-            "properties": {
-              "unit": {
-                "type": "string",
-                "enum": [
-                  "year",
-                  "month",
-                  "day",
-                  "hour",
-                  "minute",
-                  "second",
-                  "millisecond",
-                  "microsecond",
-                  "nanosecond",
-                  "picosecond"
-                ]
-              }
-            },
-            "required": ["unit"]
-          }
+          "required": ["type", "logical", "unit"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "bytes"
-              },
-              "logical": {
-                "const": "build.recap.Decimal"
-              }
+          "properties": {
+            "type": {
+              "const": "bytes"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.Decimal"
+            },
+            "precision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "scale": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            }
           },
-          "then": {
-            "properties": {
-              "precision": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 2147483647
-              },
-              "scale": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 2147483647
-              }
-            },
-            "required": ["precision", "scale"]
-          }
+          "required": ["precision", "scale", "type", "logical"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "int"
-              },
-              "logical": {
-                "const": "build.recap.Duration"
-              }
+          "properties": {
+            "type": {
+              "const": "int"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.Duration"
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month",
+                "day",
+                "hour",
+                "minute",
+                "second",
+                "millisecond",
+                "microsecond",
+                "nanosecond",
+                "picosecond"
+              ]
+            }
           },
-          "then": {
-            "properties": {
-              "unit": {
-                "type": "string",
-                "enum": [
-                  "year",
-                  "month",
-                  "day",
-                  "hour",
-                  "minute",
-                  "second",
-                  "millisecond",
-                  "microsecond",
-                  "nanosecond",
-                  "picosecond"
-                ]
-              }
-            },
-            "required": ["unit"]
-          }
+          "required": ["type", "logical", "unit"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "bytes"
-              },
-              "logical": {
-                "const": "build.recap.Interval"
-              },
-              "bytes": {
-                "const": 16
-              },
-              "variable": {
-                "const": false
-              }
+          "properties": {
+            "type": {
+              "const": "bytes"
             },
-            "required": ["type", "logical", "bytes", "variable"]
+            "logical": {
+              "const": "build.recap.Interval"
+            },
+            "bytes": {
+              "const": 16
+            },
+            "variable": {
+              "const": false
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month",
+                "day",
+                "hour",
+                "minute",
+                "second",
+                "millisecond",
+                "microsecond",
+                "nanosecond",
+                "picosecond"
+              ]
+            }
           },
-          "then": {
-            "properties": {
-              "unit": {
-                "type": "string",
-                "enum": [
-                  "year",
-                  "month",
-                  "day",
-                  "hour",
-                  "minute",
-                  "second",
-                  "millisecond",
-                  "microsecond",
-                  "nanosecond",
-                  "picosecond"
-                ]
-              }
-            },
-            "required": ["unit"]
-          }
+          "required": ["type", "logical", "bytes", "variable", "unit"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "int"
-              },
-              "logical": {
-                "const": "build.recap.Time"
-              }
+          "properties": {
+            "type": {
+              "const": "int"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.Time"
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month",
+                "day",
+                "hour",
+                "minute",
+                "second",
+                "millisecond",
+                "microsecond",
+                "nanosecond",
+                "picosecond"
+              ]
+            }
           },
-          "then": {
-            "properties": {
-              "unit": {
-                "type": "string",
-                "enum": [
-                  "year",
-                  "month",
-                  "day",
-                  "hour",
-                  "minute",
-                  "second",
-                  "millisecond",
-                  "microsecond",
-                  "nanosecond",
-                  "picosecond"
-                ]
-              }
-            },
-            "required": ["unit"]
-          }
+          "required": ["type", "logical", "unit"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "int"
-              },
-              "logical": {
-                "const": "build.recap.Timestamp"
-              }
+          "properties": {
+            "type": {
+              "const": "int"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.Timestamp"
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month",
+                "day",
+                "hour",
+                "minute",
+                "second",
+                "millisecond",
+                "microsecond",
+                "nanosecond",
+                "picosecond"
+              ]
+            },
+            "timezone": {
+              "type": "string",
+              "$comment": "Not validating timezone field because it's a huge list."
+            }
           },
-          "$comment": "Not validating timezone field because it's a huge list.",
-          "then": {
-            "properties": {
-              "unit": {
-                "type": "string",
-                "enum": [
-                  "year",
-                  "month",
-                  "day",
-                  "hour",
-                  "minute",
-                  "second",
-                  "millisecond",
-                  "microsecond",
-                  "nanosecond",
-                  "picosecond"
-                ]
-              },
-              "timezone": {
-                "type": "string"
-              }
-            },
-            "required": ["unit"]
-          }
+          "required": ["type", "logical", "unit"]
         },
         {
-          "if": {
-            "properties": {
-              "type": {
-                "const": "string"
-              },
-              "logical": {
-                "const": "build.recap.UUID"
-              }
+          "properties": {
+            "type": {
+              "const": "string"
             },
-            "required": ["type", "logical"]
+            "logical": {
+              "const": "build.recap.UUID"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 36,
+              "maximum": 9223372036854775807,
+              "default": 65536
+            },
+            "variable": {
+              "const": false
+            }
           },
-          "then": {
-            "properties": {
-              "bytes": {
-                "type": "integer",
-                "minimum": 36,
-                "maximum": 9223372036854775807,
-                "default": 65536
-              },
-              "variable": {
-                "const": false
-              }
-            },
-            "required": ["variable"]
-          }
+          "required": ["type", "logical", "variable"]
         }
       ]
     }
